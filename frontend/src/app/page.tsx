@@ -17,8 +17,8 @@ import {
   Shuffle
 } from "lucide-react";
 
-// Configuración de URL del Backend (Vercel Serverless o Local)
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+// Configuración de URL del Backend (Vercel Serverless o Local) - limpia barras finales automáticas
+const API_URL = (process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000").replace(/\/$/, "");
 
 interface TransactionForm {
   Time: number;

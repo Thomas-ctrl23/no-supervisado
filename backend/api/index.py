@@ -46,16 +46,19 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Configuración de CORS
+# Configuración de CORS universal
 allowed_origins_env = os.getenv("ALLOWED_ORIGINS", "*")
 origins = [origin.strip() for origin in allowed_origins_env.split(",") if origin.strip()]
-if not origins:
+if not origins or "*" in origins:
     origins = ["*"]
+    allow_credentials = False
+else:
+    allow_credentials = True
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_credentials=True,
+    allow_credentials=allow_credentials,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -195,9 +198,11 @@ def predict_single_vector(vector_30d: np.ndarray) -> PredictionResult:
 
 
 # -------------------------------------------------------------------------
-# ENDPOINTS DE LA API
+# ENDPOINTS DE LA API (Compatibles con y sin prefijo /api)
 # -------------------------------------------------------------------------
 
+@app.get("/", response_model=HealthResponse)
+@app.get("/health", response_model=HealthResponse)
 @app.get("/api/health", response_model=HealthResponse)
 def health():
     return HealthResponse(
@@ -209,6 +214,7 @@ def health():
     )
 
 
+@app.get("/metrics")
 @app.get("/api/metrics")
 def get_metrics():
     """Devuelve las métricas de rendimiento evaluadas frente al ground truth 'Class'."""
@@ -217,12 +223,14 @@ def get_metrics():
     return store.metrics_data
 
 
+@app.get("/samples")
 @app.get("/api/samples")
 def get_samples():
     """Devuelve transacciones reales de ejemplo (legítimas y fraudulentas) para pruebas."""
     return store.sample_transactions
 
 
+@app.post("/predict", response_model=PredictionResult)
 @app.post("/api/predict", response_model=PredictionResult)
 def predict_transaction(tx: TransactionFeatures):
     """
@@ -233,6 +241,7 @@ def predict_transaction(tx: TransactionFeatures):
     return predict_single_vector(vec)
 
 
+@app.post("/predict/batch", response_model=BatchPredictionResponse)
 @app.post("/api/predict/batch", response_model=BatchPredictionResponse)
 def predict_batch(batch: BatchPredictionRequest):
     """
