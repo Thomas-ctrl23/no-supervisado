@@ -1,0 +1,36 @@
+# Dataset pesado de Kaggle (No commitear nunca)
+*.csv
+creditcard.csv
+creditcard.zip
+
+# Entornos virtuales Python
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Node & Next.js
+node_modules/
+.next/
+out/
+build/
+dist/
+.DS_Store
+*.log
+
+# Vercel
+.vercel/
+
+# Variables de entorno locales
+.env
+.env.local
+.env.*.local
+*.env
+
+# Gráficos generados localmente
+*.png
+*.jpg
+
