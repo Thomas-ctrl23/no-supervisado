@@ -306,17 +306,17 @@ export default function HomePage() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
       {/* Header */}
-      <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-6">
+      <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-200 pb-6">
         <div>
           <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-blue-600/20 text-blue-400 rounded-xl border border-blue-500/30">
+            <div className="p-2.5 bg-blue-50 text-blue-600 rounded-xl border border-blue-200 shadow-xs">
               <ShieldAlert className="w-8 h-8" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight text-white">
+              <h1 className="text-2xl font-bold tracking-tight text-slate-900">
                 Detección de Fraude en Tiempo Real
               </h1>
-              <p className="text-sm text-slate-400">
+              <p className="text-sm text-slate-500">
                 Modelo de Aprendizaje No Supervisado con DBSCAN & Reducción PCA
               </p>
             </div>
@@ -324,14 +324,14 @@ export default function HomePage() {
         </div>
 
         {/* Estado del Backend */}
-        <div className="flex items-center gap-3 bg-slate-900 border border-slate-800 px-4 py-2 rounded-xl text-xs">
+        <div className="flex items-center gap-3 bg-white border border-slate-200 shadow-xs px-4 py-2 rounded-xl text-xs">
           <Server className="w-4 h-4 text-slate-400" />
-          <span className="text-slate-400">Backend Serverless:</span>
+          <span className="text-slate-500">Backend Serverless:</span>
           <span
-            className={`font-semibold px-2 py-0.5 rounded-full ${
+            className={`font-semibold px-2.5 py-0.5 rounded-full ${
               backendStatus === "Conectado"
-                ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                : "bg-amber-500/10 text-amber-400 border border-amber-500/20"
+                ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                : "bg-amber-50 text-amber-700 border border-amber-200"
             }`}
           >
             {backendStatus}
@@ -340,7 +340,7 @@ export default function HomePage() {
       </header>
 
       {/* Navegación por Pestañas */}
-      <nav className="flex gap-2 border-b border-slate-800 pb-3">
+      <nav className="flex gap-2 border-b border-slate-200 pb-3">
         {[
           { id: "single", label: "Analizador de Transacción", icon: Activity },
           { id: "batch", label: "Evaluación en Lote (Batch)", icon: Layers },
@@ -354,8 +354,8 @@ export default function HomePage() {
               onClick={() => setActiveTab(tab.id as any)}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                 activeTab === tab.id
-                  ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
-                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-900"
+                  ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -370,21 +370,21 @@ export default function HomePage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Formulario */}
           <div className="lg:col-span-7 space-y-6">
-            <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm shadow-xl">
+            <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-lg font-semibold text-white">Parámetros de la Transacción</h2>
+                <h2 className="text-lg font-semibold text-slate-900">Parámetros de la Transacción</h2>
                 <div className="flex gap-2">
                   <button
                     type="button"
                     onClick={() => loadSample("LEGÍTIMA")}
-                    className="text-xs bg-emerald-950/60 hover:bg-emerald-900 text-emerald-300 border border-emerald-800/60 px-3 py-1.5 rounded-lg transition"
+                    className="text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 px-3 py-1.5 rounded-lg transition font-medium"
                   >
                     + Cargar Legítima
                   </button>
                   <button
                     type="button"
                     onClick={() => loadSample("FRAUDE")}
-                    className="text-xs bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-800/60 px-3 py-1.5 rounded-lg transition"
+                    className="text-xs bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 px-3 py-1.5 rounded-lg transition font-medium"
                   >
                     + Cargar Fraude
                   </button>
@@ -392,7 +392,7 @@ export default function HomePage() {
                     type="button"
                     onClick={loadRandom}
                     title="Generar transacción aleatoria para probar el algoritmo"
-                    className="text-xs bg-purple-950/60 hover:bg-purple-900 text-purple-300 border border-purple-800/60 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 font-medium"
+                    className="text-xs bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-300 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 font-medium"
                   >
                     <Shuffle className="w-3.5 h-3.5" />
                     Aleatorio
@@ -404,7 +404,7 @@ export default function HomePage() {
                 {/* Amount y Time */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-medium text-slate-300">
+                    <label className="text-xs font-semibold text-slate-700">
                       Monto de la Transacción ($ Amount)
                     </label>
                     <input
@@ -413,11 +413,11 @@ export default function HomePage() {
                       required
                       value={formData.Amount}
                       onChange={(e) => handleInputChange("Amount", e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+                      className="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm shadow-xs"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-medium text-slate-300">
+                    <label className="text-xs font-semibold text-slate-700">
                       Tiempo (Segundos transcurridos)
                     </label>
                     <input
@@ -426,43 +426,43 @@ export default function HomePage() {
                       required
                       value={formData.Time}
                       onChange={(e) => handleInputChange("Time", e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+                      className="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm shadow-xs"
                     />
                   </div>
                 </div>
 
                 {/* V1..V28 Colapsable con Etiquetas Descriptivas */}
-                <div className="border border-slate-800 rounded-2xl overflow-hidden bg-slate-950/60 shadow-inner">
-                  <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center px-5 py-4 border-b border-slate-800/80 bg-slate-900/40 gap-3">
+                <div className="border border-slate-200 rounded-2xl overflow-hidden bg-slate-50/70 shadow-xs">
+                  <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center px-5 py-4 border-b border-slate-200 bg-slate-100/70 gap-3">
                     <button
                       type="button"
                       onClick={() => setIsVFeaturesOpen(!isVFeaturesOpen)}
                       className="flex items-center gap-2 text-left group"
                     >
-                      <span className="text-sm font-semibold text-slate-200 group-hover:text-blue-400 transition">
+                      <span className="text-sm font-semibold text-slate-800 group-hover:text-blue-600 transition">
                         Variables Latentes Anonimizadas (V1 a V28)
                       </span>
-                      <span className="text-[11px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded-full font-mono">
+                      <span className="text-[11px] bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full font-mono font-medium">
                         PCA Bancario
                       </span>
                       {isVFeaturesOpen ? (
-                        <ChevronUp className="w-4 h-4 text-slate-400" />
+                        <ChevronUp className="w-4 h-4 text-slate-500" />
                       ) : (
-                        <ChevronDown className="w-4 h-4 text-slate-400" />
+                        <ChevronDown className="w-4 h-4 text-slate-500" />
                       )}
                     </button>
 
                     {isVFeaturesOpen && (
                       <div className="flex items-center gap-2">
                         {/* Selector de filtro de variables */}
-                        <div className="flex bg-slate-950 p-1 rounded-lg border border-slate-800 text-[11px]">
+                        <div className="flex bg-white p-1 rounded-lg border border-slate-200 text-[11px] shadow-2xs">
                           <button
                             type="button"
                             onClick={() => setFilterCategory("all")}
                             className={`px-2.5 py-1 rounded-md transition ${
                               filterCategory === "all"
                                 ? "bg-blue-600 text-white font-medium"
-                                : "text-slate-400 hover:text-white"
+                                : "text-slate-600 hover:text-slate-900"
                             }`}
                           >
                             Todas (28)
@@ -473,7 +473,7 @@ export default function HomePage() {
                             className={`px-2.5 py-1 rounded-md transition ${
                               filterCategory === "critical"
                                 ? "bg-rose-600 text-white font-medium"
-                                : "text-slate-400 hover:text-white"
+                                : "text-slate-600 hover:text-slate-900"
                             }`}
                           >
                             Críticas (4)
@@ -484,7 +484,7 @@ export default function HomePage() {
                             className={`px-2.5 py-1 rounded-md transition ${
                               filterCategory === "high"
                                 ? "bg-amber-600 text-white font-medium"
-                                : "text-slate-400 hover:text-white"
+                                : "text-slate-600 hover:text-slate-900"
                             }`}
                           >
                             Alto Impacto (7)
@@ -495,7 +495,7 @@ export default function HomePage() {
                           type="button"
                           onClick={resetVFeatures}
                           title="Restablecer todas las variables V a 0.0"
-                          className="text-[11px] text-slate-400 hover:text-slate-200 bg-slate-900 border border-slate-800 px-2.5 py-1.5 rounded-lg transition"
+                          className="text-[11px] text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-2.5 py-1.5 rounded-lg transition shadow-2xs font-medium"
                         >
                           Reset 0.0
                         </button>
@@ -505,7 +505,7 @@ export default function HomePage() {
 
                   {isVFeaturesOpen && (
                     <div className="p-5 space-y-4">
-                      <p className="text-xs text-slate-400 leading-relaxed">
+                      <p className="text-xs text-slate-500 leading-relaxed">
                         Etiquetas de dominio simuladas según la correlación estadística con el fraude financiero en el dataset de Kaggle (ULB). Puedes editar directamente los valores numéricos:
                       </p>
 
@@ -537,35 +537,35 @@ export default function HomePage() {
                                 key={key}
                                 className={`p-3 rounded-xl border transition-all ${
                                   isCritical
-                                    ? "bg-rose-950/20 border-rose-800/40 hover:border-rose-700/60"
+                                    ? "bg-rose-50/70 border-rose-200 hover:border-rose-300"
                                     : isHigh
-                                    ? "bg-amber-950/20 border-amber-800/40 hover:border-amber-700/60"
-                                    : "bg-slate-900/60 border-slate-800/80 hover:border-slate-700"
+                                    ? "bg-amber-50/70 border-amber-200 hover:border-amber-300"
+                                    : "bg-white border-slate-200 hover:border-blue-300 shadow-2xs"
                                 }`}
                               >
                                 <div className="flex justify-between items-center mb-1">
                                   <div className="flex items-center gap-1.5">
-                                    <span className="font-mono text-xs font-bold text-white">
+                                    <span className="font-mono text-xs font-bold text-slate-900">
                                       {meta.code}
                                     </span>
-                                    <span className="text-xs font-semibold text-slate-200 truncate max-w-[170px]">
+                                    <span className="text-xs font-semibold text-slate-700 truncate max-w-[170px]">
                                       {meta.label}
                                     </span>
                                   </div>
                                   <span
                                     className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase ${
                                       isCritical
-                                        ? "bg-rose-500/20 text-rose-300 border border-rose-500/30"
+                                        ? "bg-rose-100 text-rose-700 border border-rose-200"
                                         : isHigh
-                                        ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
-                                        : "bg-slate-800 text-slate-400"
+                                        ? "bg-amber-100 text-amber-700 border border-amber-200"
+                                        : "bg-slate-100 text-slate-600"
                                     }`}
                                   >
                                     {meta.category}
                                   </span>
                                 </div>
 
-                                <p className="text-[10px] text-slate-400 mb-2 leading-tight">
+                                <p className="text-[10px] text-slate-500 mb-2 leading-tight">
                                   {meta.hint}
                                 </p>
 
@@ -575,7 +575,7 @@ export default function HomePage() {
                                     step="any"
                                     value={formData[key]}
                                     onChange={(e) => handleInputChange(key, e.target.value)}
-                                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                    className="w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-blue-500"
                                   />
                                 </div>
                               </div>
@@ -590,7 +590,7 @@ export default function HomePage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-xl transition shadow-lg shadow-blue-600/25 flex justify-center items-center gap-2 disabled:opacity-50"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition shadow-md shadow-blue-500/20 flex justify-center items-center gap-2 disabled:opacity-50"
                 >
                   {loading ? (
                     <>
@@ -610,20 +610,20 @@ export default function HomePage() {
 
           {/* Panel de Resultado */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm shadow-xl flex flex-col justify-between min-h-[360px]">
+            <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm flex flex-col justify-between min-h-[360px]">
               <div>
-                <h2 className="text-lg font-semibold text-white mb-4">Veredicto de Seguridad</h2>
+                <h2 className="text-lg font-semibold text-slate-900 mb-4">Veredicto de Seguridad</h2>
 
                 {error && (
-                  <div className="p-4 bg-rose-500/10 border border-rose-500/20 rounded-xl text-rose-300 text-sm flex gap-3 items-center">
-                    <AlertTriangle className="w-5 h-5 flex-shrink-0" />
+                  <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-sm flex gap-3 items-center">
+                    <AlertTriangle className="w-5 h-5 flex-shrink-0 text-rose-600" />
                     <span>{error}</span>
                   </div>
                 )}
 
                 {!result && !error && !loading && (
-                  <div className="text-center py-12 text-slate-500 space-y-2">
-                    <ShieldCheck className="w-12 h-12 mx-auto stroke-1" />
+                  <div className="text-center py-12 text-slate-400 space-y-2">
+                    <ShieldCheck className="w-12 h-12 mx-auto stroke-1 text-slate-300" />
                     <p className="text-sm">Ingresa los datos o carga una muestra para clasificar.</p>
                   </div>
                 )}
@@ -634,15 +634,15 @@ export default function HomePage() {
                     <div
                       className={`p-6 rounded-2xl border text-center space-y-2 ${
                         result.is_fraud
-                          ? "bg-rose-500/10 border-rose-500/30 text-rose-400"
-                          : "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+                          ? "bg-rose-50 border-rose-200 text-rose-800"
+                          : "bg-emerald-50 border-emerald-200 text-emerald-800"
                       }`}
                     >
                       <div className="flex justify-center">
                         {result.is_fraud ? (
-                          <ShieldAlert className="w-14 h-14 text-rose-500 animate-pulse" />
+                          <ShieldAlert className="w-14 h-14 text-rose-600 animate-pulse" />
                         ) : (
-                          <ShieldCheck className="w-14 h-14 text-emerald-500" />
+                          <ShieldCheck className="w-14 h-14 text-emerald-600" />
                         )}
                       </div>
                       <h3 className="text-2xl font-black tracking-wide">
@@ -657,25 +657,25 @@ export default function HomePage() {
 
                     {/* Métricas del Resultado */}
                     <div className="grid grid-cols-2 gap-3 text-xs">
-                      <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                        <span className="text-slate-400 block mb-1">Score de Anomalía</span>
+                      <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <span className="text-slate-500 block mb-1">Score de Anomalía</span>
                         <span
                           className={`text-lg font-mono font-bold ${
-                            result.anomaly_score > 1.0 ? "text-rose-400" : "text-emerald-400"
+                            result.anomaly_score > 1.0 ? "text-rose-600" : "text-emerald-600"
                           }`}
                         >
                           {result.anomaly_score}
                         </span>
-                        <span className="text-[10px] text-slate-500 block mt-0.5">
+                        <span className="text-[10px] text-slate-400 block mt-0.5">
                           (D / eps &gt; 1.0 = Fraude)
                         </span>
                       </div>
-                      <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                        <span className="text-slate-400 block mb-1">Distancia Euclídea</span>
-                        <span className="text-lg font-mono font-bold text-white">
+                      <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <span className="text-slate-500 block mb-1">Distancia Euclídea</span>
+                        <span className="text-lg font-mono font-bold text-slate-900">
                           {result.distance_to_nearest_core}
                         </span>
-                        <span className="text-[10px] text-slate-500 block mt-0.5">
+                        <span className="text-[10px] text-slate-400 block mt-0.5">
                           Radio Epsilon: {result.eps}
                         </span>
                       </div>
@@ -684,7 +684,7 @@ export default function HomePage() {
                 )}
               </div>
 
-              <div className="text-[11px] text-slate-500 border-t border-slate-800/80 pt-4 mt-6">
+              <div className="text-[11px] text-slate-400 border-t border-slate-100 pt-4 mt-6">
                 Algoritmo: DBSCAN Transductivo aproximado mediante Core Samples.
               </div>
             </div>
@@ -694,17 +694,17 @@ export default function HomePage() {
 
       {/* TAB 2: EVALUACIÓN EN LOTE */}
       {activeTab === "batch" && (
-        <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 space-y-6">
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-6 space-y-6 shadow-sm">
           <div className="flex justify-between items-center">
             <div>
-              <h2 className="text-lg font-semibold text-white">Predicción por Lotes (Batch)</h2>
-              <p className="text-sm text-slate-400">
+              <h2 className="text-lg font-semibold text-slate-900">Predicción por Lotes (Batch)</h2>
+              <p className="text-sm text-slate-500">
                 Pega un arreglo JSON de transacciones para evaluar múltiples registros de forma vectorial.
               </p>
             </div>
             <button
               onClick={() => setBatchJson(JSON.stringify(samples.slice(0, 4), null, 2))}
-              className="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg"
+              className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-medium border border-slate-200"
             >
               Cargar Plantilla de Muestra
             </button>
@@ -715,35 +715,35 @@ export default function HomePage() {
             value={batchJson}
             onChange={(e) => setBatchJson(e.target.value)}
             placeholder='[{"Time": 0, "Amount": 50, "V1": 0.5, ...}]'
-            className="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 font-mono text-xs text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full bg-white border border-slate-300 rounded-xl p-4 font-mono text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-2xs"
           />
 
           <button
             onClick={handleBatchPredict}
             disabled={loading || !batchJson}
-            className="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 px-6 rounded-xl text-sm transition disabled:opacity-50"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-6 rounded-xl text-sm transition shadow-md shadow-blue-500/20 disabled:opacity-50"
           >
             {loading ? "Procesando Lote..." : "Evaluar Lote Completo"}
           </button>
 
           {batchResults && (
-            <div className="space-y-4 pt-4 border-t border-slate-800">
+            <div className="space-y-4 pt-4 border-t border-slate-200">
               <div className="grid grid-cols-3 gap-4 text-center">
-                <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl">
-                  <span className="text-xs text-slate-400 block">Procesadas</span>
-                  <span className="text-xl font-bold font-mono text-white">
+                <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                  <span className="text-xs text-slate-500 block">Procesadas</span>
+                  <span className="text-xl font-bold font-mono text-slate-900">
                     {batchResults.total_processed}
                   </span>
                 </div>
-                <div className="p-4 bg-rose-950/20 border border-rose-900/40 rounded-xl">
-                  <span className="text-xs text-rose-400 block">Fraudes Detectados</span>
-                  <span className="text-xl font-bold font-mono text-rose-400">
+                <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl">
+                  <span className="text-xs text-rose-700 block font-medium">Fraudes Detectados</span>
+                  <span className="text-xl font-bold font-mono text-rose-700">
                     {batchResults.fraud_count}
                   </span>
                 </div>
-                <div className="p-4 bg-emerald-950/20 border border-emerald-900/40 rounded-xl">
-                  <span className="text-xs text-emerald-400 block">Legítimas</span>
-                  <span className="text-xl font-bold font-mono text-emerald-400">
+                <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
+                  <span className="text-xs text-emerald-700 block font-medium">Legítimas</span>
+                  <span className="text-xl font-bold font-mono text-emerald-700">
                     {batchResults.legitimate_count}
                   </span>
                 </div>
@@ -757,69 +757,69 @@ export default function HomePage() {
       {activeTab === "metrics" && metrics && (
         <div className="space-y-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-slate-900/60 border border-slate-800 p-5 rounded-2xl">
-              <span className="text-xs text-slate-400">Precision (No Supervisado)</span>
-              <p className="text-2xl font-bold font-mono text-white mt-1">
+            <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm">
+              <span className="text-xs text-slate-500">Precision (No Supervisado)</span>
+              <p className="text-2xl font-bold font-mono text-slate-900 mt-1">
                 {(metrics.precision * 100).toFixed(1)}%
               </p>
-              <span className="text-[10px] text-slate-500">Transacciones clasificadas como fraude que realmente lo eran</span>
+              <span className="text-[10px] text-slate-400">Transacciones clasificadas como fraude que realmente lo eran</span>
             </div>
-            <div className="bg-slate-900/60 border border-slate-800 p-5 rounded-2xl">
-              <span className="text-xs text-slate-400">Recall / Sensibilidad</span>
-              <p className="text-2xl font-bold font-mono text-white mt-1">
+            <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm">
+              <span className="text-xs text-slate-500">Recall / Sensibilidad</span>
+              <p className="text-2xl font-bold font-mono text-slate-900 mt-1">
                 {(metrics.recall * 100).toFixed(1)}%
               </p>
-              <span className="text-[10px] text-slate-500">Porcentaje de fraudes reales interceptados</span>
+              <span className="text-[10px] text-slate-400">Porcentaje de fraudes reales interceptados</span>
             </div>
-            <div className="bg-slate-900/60 border border-slate-800 p-5 rounded-2xl">
-              <span className="text-xs text-slate-400">F1-Score</span>
-              <p className="text-2xl font-bold font-mono text-blue-400 mt-1">
+            <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm">
+              <span className="text-xs text-slate-500">F1-Score</span>
+              <p className="text-2xl font-bold font-mono text-blue-600 mt-1">
                 {(metrics.f1_score * 100).toFixed(1)}%
               </p>
-              <span className="text-[10px] text-slate-500">Media armónica balanceada</span>
+              <span className="text-[10px] text-slate-400">Media armónica balanceada</span>
             </div>
-            <div className="bg-slate-900/60 border border-slate-800 p-5 rounded-2xl">
-              <span className="text-xs text-slate-400">AUC-PR</span>
-              <p className="text-2xl font-bold font-mono text-emerald-400 mt-1">
+            <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm">
+              <span className="text-xs text-slate-500">AUC-PR</span>
+              <p className="text-2xl font-bold font-mono text-emerald-600 mt-1">
                 {metrics.pr_auc.toFixed(3)}
               </p>
-              <span className="text-[10px] text-slate-500">Área bajo la curva Precision-Recall</span>
+              <span className="text-[10px] text-slate-400">Área bajo la curva Precision-Recall</span>
             </div>
           </div>
 
           {/* Matriz de Confusión */}
-          <div className="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl">
-            <h3 className="text-md font-semibold text-white mb-4">
+          <div className="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
+            <h3 className="text-md font-semibold text-slate-900 mb-4">
               Matriz de Confusión (Evaluación de Seguridad Bancaria)
             </h3>
             <div className="grid grid-cols-2 gap-4 max-w-lg mx-auto text-center font-mono">
-              <div className="p-4 bg-emerald-950/20 border border-emerald-900/40 rounded-xl">
-                <span className="text-xs text-slate-400 block font-sans">Verdaderos Negativos (TN)</span>
-                <span className="text-2xl font-bold text-emerald-400">
+              <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
+                <span className="text-xs text-slate-600 block font-sans">Verdaderos Negativos (TN)</span>
+                <span className="text-2xl font-bold text-emerald-700">
                   {metrics.confusion_matrix.true_negatives}
                 </span>
-                <span className="text-[10px] text-slate-500 block mt-1">Legítimas autorizadas</span>
+                <span className="text-[10px] text-emerald-600/80 block mt-1">Legítimas autorizadas</span>
               </div>
-              <div className="p-4 bg-amber-950/20 border border-amber-900/40 rounded-xl">
-                <span className="text-xs text-slate-400 block font-sans">Falsos Positivos (FP)</span>
-                <span className="text-2xl font-bold text-amber-400">
+              <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl">
+                <span className="text-xs text-slate-600 block font-sans">Falsos Positivos (FP)</span>
+                <span className="text-2xl font-bold text-amber-700">
                   {metrics.confusion_matrix.false_positives}
                 </span>
-                <span className="text-[10px] text-slate-500 block mt-1">Legítimas bloqueadas</span>
+                <span className="text-[10px] text-amber-600/80 block mt-1">Legítimas bloqueadas</span>
               </div>
-              <div className="p-4 bg-rose-950/20 border border-rose-900/40 rounded-xl">
-                <span className="text-xs text-slate-400 block font-sans">Falsos Negativos (FN)</span>
-                <span className="text-2xl font-bold text-rose-400">
+              <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl">
+                <span className="text-xs text-slate-600 block font-sans">Falsos Negativos (FN)</span>
+                <span className="text-2xl font-bold text-rose-700">
                   {metrics.confusion_matrix.false_negatives}
                 </span>
-                <span className="text-[10px] text-slate-500 block mt-1">Fraudes no detectados</span>
+                <span className="text-[10px] text-rose-600/80 block mt-1">Fraudes no detectados</span>
               </div>
-              <div className="p-4 bg-blue-950/20 border border-blue-900/40 rounded-xl">
-                <span className="text-xs text-slate-400 block font-sans">Verdaderos Positivos (TP)</span>
-                <span className="text-2xl font-bold text-blue-400">
+              <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                <span className="text-xs text-slate-600 block font-sans">Verdaderos Positivos (TP)</span>
+                <span className="text-2xl font-bold text-blue-700">
                   {metrics.confusion_matrix.true_positives}
                 </span>
-                <span className="text-[10px] text-slate-500 block mt-1">Fraudes interceptados</span>
+                <span className="text-[10px] text-blue-600/80 block mt-1">Fraudes interceptados</span>
               </div>
             </div>
           </div>
@@ -828,36 +828,36 @@ export default function HomePage() {
 
       {/* TAB 4: CÓMO FUNCIONA */}
       {activeTab === "about" && (
-        <div className="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl space-y-4 text-slate-300 text-sm leading-relaxed">
-          <h2 className="text-xl font-bold text-white mb-2">
+        <div className="bg-white border border-slate-200 p-6 rounded-2xl space-y-4 text-slate-600 text-sm leading-relaxed shadow-sm">
+          <h2 className="text-xl font-bold text-slate-900 mb-2">
             Fundamentos del Sistema de Seguridad con DBSCAN
           </h2>
           <p>
             En seguridad informática y financiera, los atacantes cambian constantemente sus estrategias,
             haciendo que los modelos supervisados se vuelvan obsoletos rápidamente. Este sistema emplea{" "}
-            <strong className="text-blue-400">Aprendizaje No Supervisado</strong> con el algoritmo{" "}
-            <strong>DBSCAN (Density-Based Spatial Clustering of Applications with Noise)</strong>.
+            <strong className="text-blue-600">Aprendizaje No Supervisado</strong> con el algoritmo{" "}
+            <strong className="text-slate-900">DBSCAN (Density-Based Spatial Clustering of Applications with Noise)</strong>.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
-            <div className="bg-slate-950 p-4 rounded-xl border border-slate-800">
-              <h4 className="font-semibold text-white mb-1">1. Reducción PCA</h4>
-              <p className="text-xs text-slate-400">
+            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <h4 className="font-semibold text-slate-900 mb-1">1. Reducción PCA</h4>
+              <p className="text-xs text-slate-500">
                 Se comprimen las 30 características originales en 10 componentes principales que retienen la mayor
                 varianza, eliminando la maldición de la dimensionalidad.
               </p>
             </div>
-            <div className="bg-slate-950 p-4 rounded-xl border border-slate-800">
-              <h4 className="font-semibold text-white mb-1">2. Core Samples</h4>
-              <p className="text-xs text-slate-400">
+            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <h4 className="font-semibold text-slate-900 mb-1">2. Core Samples</h4>
+              <p className="text-xs text-slate-500">
                 DBSCAN descubre las zonas donde el comportamiento normal de los usuarios es denso y regular. Los
                 puntos centrales de estas zonas son los <em>Core Samples</em>.
               </p>
             </div>
-            <div className="bg-slate-950 p-4 rounded-xl border border-slate-800">
-              <h4 className="font-semibold text-white mb-1">3. Regla del Épsilon (ε)</h4>
-              <p className="text-xs text-slate-400">
+            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <h4 className="font-semibold text-slate-900 mb-1">3. Regla del Épsilon (ε)</h4>
+              <p className="text-xs text-slate-500">
                 Toda transacción nueva calcula su distancia euclidiana al core sample más cercano. Si está a más de{" "}
-                <strong>ε = 2.5</strong>, se declara automáticamente como <strong>FRAUDE</strong> (anomalía de baja densidad).
+                <strong className="text-slate-900">ε = 2.5</strong>, se declara automáticamente como <strong className="text-rose-600">FRAUDE</strong> (anomalía de baja densidad).
               </p>
             </div>
           </div>
@@ -866,11 +866,11 @@ export default function HomePage() {
 
       {/* Historial de la Sesión */}
       {history.length > 0 && (
-        <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 space-y-4">
-          <h3 className="text-md font-semibold text-white">Historial de Predicciones en la Sesión</h3>
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-4 shadow-sm">
+          <h3 className="text-md font-semibold text-slate-900">Historial de Predicciones en la Sesión</h3>
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-slate-950 text-slate-400 uppercase text-[10px]">
+            <table className="w-full text-left text-xs text-slate-600">
+              <thead className="bg-slate-50 text-slate-500 uppercase text-[10px] border-b border-slate-200">
                 <tr>
                   <th className="py-2.5 px-3">Monto</th>
                   <th className="py-2.5 px-3">Tiempo (s)</th>
@@ -879,19 +879,19 @@ export default function HomePage() {
                   <th className="py-2.5 px-3">Resultado</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800 font-mono">
+              <tbody className="divide-y divide-slate-100 font-mono">
                 {history.map((item) => (
-                  <tr key={item.id} className="hover:bg-slate-800/40 transition">
-                    <td className="py-2 px-3 text-white font-bold">${item.amount.toFixed(2)}</td>
-                    <td className="py-2 px-3">{item.time}</td>
-                    <td className="py-2 px-3">{item.distance_to_nearest_core}</td>
-                    <td className="py-2 px-3">{item.anomaly_score}</td>
-                    <td className="py-2 px-3 font-sans">
+                  <tr key={item.id} className="hover:bg-slate-50/80 transition">
+                    <td className="py-2.5 px-3 text-slate-900 font-bold">${item.amount.toFixed(2)}</td>
+                    <td className="py-2.5 px-3">{item.time}</td>
+                    <td className="py-2.5 px-3">{item.distance_to_nearest_core}</td>
+                    <td className="py-2.5 px-3">{item.anomaly_score}</td>
+                    <td className="py-2.5 px-3 font-sans">
                       <span
                         className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                           item.is_fraud
-                            ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
-                            : "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                            ? "bg-rose-50 text-rose-700 border border-rose-200"
+                            : "bg-emerald-50 text-emerald-700 border border-emerald-200"
                         }`}
                       >
                         {item.label}
