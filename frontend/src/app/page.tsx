@@ -5,13 +5,11 @@ import {
   ShieldAlert,
   ShieldCheck,
   Activity,
-  Layers,
   ChevronDown,
   ChevronUp,
   RotateCcw,
   Upload,
   Info,
-  Server,
   AlertTriangle,
   FileText,
   Shuffle
@@ -122,24 +120,12 @@ export default function HomePage() {
   // Muestras y Métricas
   const [samples, setSamples] = useState<any[]>([]);
   const [metrics, setMetrics] = useState<MetricsData | null>(null);
-  const [backendStatus, setBackendStatus] = useState<string>("Verificando...");
-  const [activeTab, setActiveTab] = useState<"single" | "batch" | "metrics" | "about">("single");
-
-  // Modo Lote
-  const [batchJson, setBatchJson] = useState("");
-  const [batchResults, setBatchResults] = useState<any | null>(null);
+  const [activeTab, setActiveTab] = useState<"single" | "metrics" | "about">("single");
 
   // Cargar métricas y muestras al iniciar
   useEffect(() => {
     async function initData() {
       try {
-        const resHealth = await fetch(`${API_URL}/api/health`);
-        if (resHealth.ok) {
-          setBackendStatus("Conectado");
-        } else {
-          setBackendStatus("Desconectado");
-        }
-
         const resSamples = await fetch(`${API_URL}/api/samples`);
         if (resSamples.ok) {
           const samplesData = await resSamples.json();
@@ -153,7 +139,6 @@ export default function HomePage() {
         }
       } catch (err) {
         console.warn("Backend no disponible actualmente:", err);
-        setBackendStatus("Error de Conexión");
       }
     }
     initData();
@@ -280,29 +265,6 @@ export default function HomePage() {
     }
   };
 
-  const handleBatchPredict = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      let parsed = JSON.parse(batchJson);
-      if (!Array.isArray(parsed)) {
-        throw new Error("El JSON debe ser una lista de transacciones.");
-      }
-      const res = await fetch(`${API_URL}/api/predict/batch`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ transactions: parsed }),
-      });
-      if (!res.ok) throw new Error("Fallo en la predicción por lote");
-      const data = await res.json();
-      setBatchResults(data);
-    } catch (err: any) {
-      setError(err.message || "Error al procesar lote");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
       {/* Header */}
@@ -322,28 +284,12 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-
-        {/* Estado del Backend */}
-        <div className="flex items-center gap-3 bg-white border border-slate-200 shadow-xs px-4 py-2 rounded-xl text-xs">
-          <Server className="w-4 h-4 text-slate-400" />
-          <span className="text-slate-500">Backend Serverless:</span>
-          <span
-            className={`font-semibold px-2.5 py-0.5 rounded-full ${
-              backendStatus === "Conectado"
-                ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                : "bg-amber-50 text-amber-700 border border-amber-200"
-            }`}
-          >
-            {backendStatus}
-          </span>
-        </div>
       </header>
 
       {/* Navegación por Pestañas */}
       <nav className="flex gap-2 border-b border-slate-200 pb-3">
         {[
           { id: "single", label: "Analizador de Transacción", icon: Activity },
-          { id: "batch", label: "Evaluación en Lote (Batch)", icon: Layers },
           { id: "metrics", label: "Métricas del Modelo", icon: FileText },
           { id: "about", label: "¿Cómo Funciona?", icon: Info },
         ].map((tab) => {
@@ -692,68 +638,7 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* TAB 2: EVALUACIÓN EN LOTE */}
-      {activeTab === "batch" && (
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-6 space-y-6 shadow-sm">
-          <div className="flex justify-between items-center">
-            <div>
-              <h2 className="text-lg font-semibold text-slate-900">Predicción por Lotes (Batch)</h2>
-              <p className="text-sm text-slate-500">
-                Pega un arreglo JSON de transacciones para evaluar múltiples registros de forma vectorial.
-              </p>
-            </div>
-            <button
-              onClick={() => setBatchJson(JSON.stringify(samples.slice(0, 4), null, 2))}
-              className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-medium border border-slate-200"
-            >
-              Cargar Plantilla de Muestra
-            </button>
-          </div>
-
-          <textarea
-            rows={8}
-            value={batchJson}
-            onChange={(e) => setBatchJson(e.target.value)}
-            placeholder='[{"Time": 0, "Amount": 50, "V1": 0.5, ...}]'
-            className="w-full bg-white border border-slate-300 rounded-xl p-4 font-mono text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-2xs"
-          />
-
-          <button
-            onClick={handleBatchPredict}
-            disabled={loading || !batchJson}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-6 rounded-xl text-sm transition shadow-md shadow-blue-500/20 disabled:opacity-50"
-          >
-            {loading ? "Procesando Lote..." : "Evaluar Lote Completo"}
-          </button>
-
-          {batchResults && (
-            <div className="space-y-4 pt-4 border-t border-slate-200">
-              <div className="grid grid-cols-3 gap-4 text-center">
-                <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl">
-                  <span className="text-xs text-slate-500 block">Procesadas</span>
-                  <span className="text-xl font-bold font-mono text-slate-900">
-                    {batchResults.total_processed}
-                  </span>
-                </div>
-                <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl">
-                  <span className="text-xs text-rose-700 block font-medium">Fraudes Detectados</span>
-                  <span className="text-xl font-bold font-mono text-rose-700">
-                    {batchResults.fraud_count}
-                  </span>
-                </div>
-                <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
-                  <span className="text-xs text-emerald-700 block font-medium">Legítimas</span>
-                  <span className="text-xl font-bold font-mono text-emerald-700">
-                    {batchResults.legitimate_count}
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* TAB 3: MÉTRICAS DEL MODELO */}
+      {/* TAB 2: MÉTRICAS DEL MODELO */}
       {activeTab === "metrics" && metrics && (
         <div className="space-y-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
