@@ -15,5 +15,18 @@
     "false_positives": 596,
     "false_negatives": 133,
     "true_positives": 340
+  },
+  "dataset_summary": {
+    "source_file": "creditcard.csv (Kaggle / ULB)",
+    "original_rows": 284807,
+    "duplicates_removed": 1081,
+    "nulls_removed": 0,
+    "cleaned_total_rows": 283726,
+    "training_sample_size": 20473,
+    "sampled_legit": 20000,
+    "sampled_fraud": 473,
+    "scaling_method": "StandardScaler (Normalización Z-score)",
+    "dimensionality_reduction": "PCA (30 dimensiones a 10 componentes)",
+    "core_samples_count": 5000
   }
 }

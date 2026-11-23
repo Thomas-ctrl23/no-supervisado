@@ -49,6 +49,19 @@ interface MetricsData {
   total_evaluated_transactions: number;
   actual_fraud_count: number;
   actual_legit_count: number;
+  dataset_summary?: {
+    source_file: string;
+    original_rows: number;
+    duplicates_removed: number;
+    nulls_removed: number;
+    cleaned_total_rows: number;
+    training_sample_size: number;
+    sampled_legit: number;
+    sampled_fraud: number;
+    scaling_method: string;
+    dimensionality_reduction: string;
+    core_samples_count: number;
+  };
 }
 
 interface FeatureMeta {
@@ -707,6 +720,126 @@ export default function HomePage() {
                 <span className="text-[10px] text-blue-600/80 block mt-1">Fraudes interceptados</span>
               </div>
             </div>
+          </div>
+
+          {/* Ficha Técnica del Dataset de Entrenamiento Limpiado */}
+          <div className="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm space-y-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-100 pb-4">
+              <div>
+                <h3 className="text-md font-semibold text-slate-900">
+                  Dataset de Entrenamiento Limpiado (CSV)
+                </h3>
+                <p className="text-xs text-slate-500">
+                  Origen: {metrics.dataset_summary?.source_file || "creditcard.csv (Kaggle / ULB)"}
+                </p>
+              </div>
+              <span className="text-xs font-mono bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 rounded-full font-medium">
+                Pipeline: Limpieza → Submuestreo → StandardScaler → PCA(10) → DBSCAN
+              </span>
+            </div>
+
+            {/* Estadísticas de Limpieza */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs font-mono">
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <span className="text-slate-500 block font-sans text-[11px] mb-1">Filas CSV Originales</span>
+                <span className="text-lg font-bold text-slate-900 block">
+                  {(metrics.dataset_summary?.original_rows || 284807).toLocaleString()}
+                </span>
+                <span className="text-[10px] text-slate-400 font-sans">~150 MB (284,807 tx)</span>
+              </div>
+
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <span className="text-slate-500 block font-sans text-[11px] mb-1">Duplicados Filtrados</span>
+                <span className="text-lg font-bold text-amber-600 block">
+                  -{(metrics.dataset_summary?.duplicates_removed || 1081).toLocaleString()}
+                </span>
+                <span className="text-[10px] text-slate-400 font-sans">0 valores nulos eliminados</span>
+              </div>
+
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <span className="text-slate-500 block font-sans text-[11px] mb-1">Dataset Limpio y Muestreado</span>
+                <span className="text-lg font-bold text-blue-600 block">
+                  {(metrics.dataset_summary?.training_sample_size || metrics.total_evaluated_transactions).toLocaleString()}
+                </span>
+                <span className="text-[10px] text-slate-400 font-sans">
+                  20,000 normales + {metrics.actual_fraud_count} fraudes
+                </span>
+              </div>
+
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <span className="text-slate-500 block font-sans text-[11px] mb-1">Core Samples Exportados</span>
+                <span className="text-lg font-bold text-emerald-600 block">
+                  {(metrics.dataset_summary?.core_samples_count || 5000).toLocaleString()}
+                </span>
+                <span className="text-[10px] text-slate-400 font-sans">Centroides para inferencia</span>
+              </div>
+            </div>
+
+            {/* Muestra de Registros del CSV Limpiado */}
+            {samples.length > 0 && (
+              <div className="space-y-3 pt-2">
+                <div className="flex justify-between items-center">
+                  <h4 className="text-xs font-semibold text-slate-700">
+                    Muestra de Filas del Dataset Limpiado (Valores Estandarizados Reales)
+                  </h4>
+                  <span className="text-[10px] text-slate-400">
+                    Mostrando 10 transacciones representativas
+                  </span>
+                </div>
+
+                <div className="overflow-x-auto border border-slate-200 rounded-xl">
+                  <table className="w-full text-left text-[11px] text-slate-600 font-mono">
+                    <thead className="bg-slate-100 text-slate-600 uppercase text-[10px] border-b border-slate-200">
+                      <tr>
+                        <th className="py-2 px-2.5">Clase Real</th>
+                        <th className="py-2 px-2.5">Monto ($)</th>
+                        <th className="py-2 px-2.5">Tiempo (s)</th>
+                        <th className="py-2 px-2.5">V1</th>
+                        <th className="py-2 px-2.5">V4 (Velocidad)</th>
+                        <th className="py-2 px-2.5">V10 (Perfil)</th>
+                        <th className="py-2 px-2.5">V12 (Auth)</th>
+                        <th className="py-2 px-2.5">V14 (Dispositivo)</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 bg-white">
+                      {samples.map((row, idx) => {
+                        const isFraud = row._is_fraud_ground_truth === 1;
+                        return (
+                          <tr key={idx} className="hover:bg-slate-50 transition">
+                            <td className="py-1.5 px-2.5 font-sans">
+                              <span
+                                className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${
+                                  isFraud
+                                    ? "bg-rose-50 text-rose-700 border border-rose-200"
+                                    : "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                                }`}
+                              >
+                                {isFraud ? "FRAUDE (Class 1)" : "LEGÍTIMA (Class 0)"}
+                              </span>
+                            </td>
+                            <td className="py-1.5 px-2.5 text-slate-900 font-bold">
+                              ${Number(row.Amount || 0).toFixed(2)}
+                            </td>
+                            <td className="py-1.5 px-2.5 text-slate-500">{row.Time}</td>
+                            <td className="py-1.5 px-2.5">{Number(row.V1 || 0).toFixed(3)}</td>
+                            <td className="py-1.5 px-2.5">{Number(row.V4 || 0).toFixed(3)}</td>
+                            <td className="py-1.5 px-2.5">{Number(row.V10 || 0).toFixed(3)}</td>
+                            <td className="py-1.5 px-2.5">{Number(row.V12 || 0).toFixed(3)}</td>
+                            <td
+                              className={`py-1.5 px-2.5 font-bold ${
+                                isFraud ? "text-rose-600" : "text-slate-700"
+                              }`}
+                            >
+                              {Number(row.V14 || 0).toFixed(3)}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
